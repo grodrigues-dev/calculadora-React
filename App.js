@@ -18,33 +18,36 @@ export default function  App() {
   function clear(){
     setCalc([])
     setResultado([])
-    console.log('oi');
     
   }
 
   function Calcular(){
     let operacao = calc.filter(x => typeof(x)==="string")
     let numeros = calc.join('').split(operacao)
+    let n1 = numeros[0]; 
+    let n2 = numeros[1]; 
     let result; 
     switch (operacao[0]) {
       case '+':
-       result = numeros[0]+numeros[1]
+       result = n1+n2
         break;
       case '-':
-        result = numeros[0]-numeros[1]
+        result = n1-n2
         break;
-      case '/':
-        result = numeros[0]/numeros[1]
+      case '÷':
+        result = n1/n2
         break;
       case '*':
-        result = numeros[0]*numeros[1]
+        result = n1*n2
         break;
       default:
         break;
     }
-    console.log(result, operacao);
+    console.log(result, typeof(result));
     
-    setResultado(result)
+    if (result == 'NaN' || result == "Infinity") return
+    if (operacao.length>1) return
+    setResultado(result.toFixed(2))
   }
 
   return (
@@ -78,7 +81,7 @@ export default function  App() {
         </View>
         <View style={styles.simbolos}>
             <TouchableOpacity style={styles.buttons} onPress={clear}><Text style={styles.text}> C</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('/')}}><Text style={styles.text}> ÷</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={()=>{push('÷')}}><Text style={styles.text}> ÷</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('*')}}><Text style={styles.text}> X</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('-')}}><Text style={styles.text}> -</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('+')}}><Text style={styles.text}> +</Text></TouchableOpacity>
