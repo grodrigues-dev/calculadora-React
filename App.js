@@ -5,19 +5,53 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 export default function  App() {
   
   const [calc, setCalc] = useState([]);
+  const [resultado, setResultado] = useState([])
   
-  const push = (item) => setCalc(state =>
-     [...state, item]
-  )
+  const push = (item) =>{
+    setCalc(state =>
+       [...state, item]
+       
+    )
+    
+  } 
 
   function clear(){
     setCalc([])
+    setResultado([])
+    console.log('oi');
+    
+  }
+
+  function Calcular(){
+    let operacao = calc.filter(x => typeof(x)==="string")
+    let numeros = calc.join('').split(operacao)
+    let result; 
+    switch (operacao[0]) {
+      case '+':
+       result = numeros[0]+numeros[1]
+        break;
+      case '-':
+        result = numeros[0]-numeros[1]
+        break;
+      case '/':
+        result = numeros[0]/numeros[1]
+        break;
+      case '*':
+        result = numeros[0]*numeros[1]
+        break;
+      default:
+        break;
+    }
+    console.log(result, operacao);
+    
+    setResultado(result)
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.resultado}>
         <Text style={styles.TextResult}>{calc}</Text>
+        <Text style={styles.TextResult}>{resultado}</Text>
       </View>
       <View style={styles.calculos}>
         <View style={styles.numeros}>
@@ -39,13 +73,13 @@ export default function  App() {
           <View style={styles.lines}>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push(0)}}><Text style={styles.text}> 0</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('.')}}><Text style={styles.text}> ,</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} ><Text style={styles.text}> =</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={Calcular} ><Text style={styles.text}> =</Text></TouchableOpacity>
           </View>
         </View>
         <View style={styles.simbolos}>
             <TouchableOpacity style={styles.buttons} onPress={clear}><Text style={styles.text}> C</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('/')}}><Text style={styles.text}> ÷</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('X')}}><Text style={styles.text}> X</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={()=>{push('*')}}><Text style={styles.text}> X</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('-')}}><Text style={styles.text}> -</Text></TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={()=>{push('+')}}><Text style={styles.text}> +</Text></TouchableOpacity>
         </View>
