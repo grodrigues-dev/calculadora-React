@@ -1,91 +1,31 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
- 
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function  App() {
-  
-  const [calc, setCalc] = useState([]);
-  const [resultado, setResultado] = useState([])
-  
-  const push = (item) =>{
-    setCalc(state =>
-       [...state, item]
-       
-    )
-    
-  } 
+const col1Buttons = [
+  ['7','8','9'], 
+  ['4','5','6'], 
+  ['1','2','3'],
+  [',','0','=']
+]
 
-  function clear(){
-    setCalc([])
-    setResultado([])
-    
-  }
+const col2Buttons = ["C", "÷", "x", "-", "+"]
 
-  function Calcular(){
-    let operacao = calc.filter(x => typeof(x)==="string" && x!='.')
-    let numeros = calc.join('').split(operacao)
-    let n1 = numeros[0]; 
-    let n2 = numeros[1]; 
-    let result; 
-    switch (operacao[0]) {
-      case '+':
-       result = n1+n2
-        break;
-      case '-':
-        result = n1-n2
-        break;
-      case '÷':
-        result = n1/n2
-        break;
-      case '*':
-        result = n1*n2
-        break;
-      default:
-        break;
-    }
-    console.log(result, typeof(result));
-    
-    if (result == 'NaN' || result == "Infinity") return
-    if (operacao.length>1) return
-    setResultado(result.toFixed(2))
-  }
-
+export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.resultado}>
-        <Text style={styles.TextResult}>{calc}</Text>
-        <Text style={styles.TextResult}>{resultado}</Text>
-      </View>
-      <View style={styles.calculos}>
-        <View style={styles.numeros}>
-          <View style={styles.lines}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(7)}}><Text style={styles.text}> 7</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(8)}}><Text style={styles.text}> 8</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(9)}}><Text style={styles.text}> 9</Text></TouchableOpacity>
-          </View>
-          <View style={styles.lines}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(4)}} ><Text style={styles.text} > 4</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(5)}}><Text style={styles.text} > 5</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(6)}}><Text style={styles.text} > 6</Text></TouchableOpacity>
-          </View>
-          <View style={styles.lines}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(1)}}><Text style={styles.text} > 1</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(2)}}><Text style={styles.text} > 2</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(3)}}><Text style={styles.text} > 3</Text></TouchableOpacity>
-          </View>
-          <View style={styles.lines}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push(0)}}><Text style={styles.text}> 0</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('.')}}><Text style={styles.text}> ,</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={Calcular} ><Text style={styles.text}> =</Text></TouchableOpacity>
-          </View>
+      <Text style={styles.display}> Display</Text>
+      <Text style={styles.result}>Result</Text>
+      <View style={styles.buttons}>
+        <View style={styles.col1}>
+          {col1Buttons.map((line,i)=><View key={i}style={styles.line}>
+          {line.map(op=><View key={op} style={styles.btn}>
+            <Text style={styles.btnText}>{op}</Text>
+          </View>)}
+          </View>)}
         </View>
-        <View style={styles.simbolos}>
-            <TouchableOpacity style={styles.buttons} onPress={clear}><Text style={styles.text}> C</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('÷')}}><Text style={styles.text}> ÷</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('*')}}><Text style={styles.text}> X</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('-')}}><Text style={styles.text}> -</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={()=>{push('+')}}><Text style={styles.text}> +</Text></TouchableOpacity>
-        </View>
+        <View style={styles.col2}>{col2Buttons.map(op=><View key={op} style={styles.btn}>
+            <Text style={styles.btnText}>{op}</Text>
+          </View>)}</View>
       </View>
     </View>
   );
@@ -94,51 +34,51 @@ export default function  App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'stretch',
     justifyContent: 'center',
-    backgroundColor: 'black'
   },
-  resultado: {
-    flex: 1, 
-    backgroundColor: "#fff", 
-    alignItems: "flex-end", 
-    justifyContent: "center", 
-    color: "#000", 
+  display:{
+    flex:1,
+    backgroundColor: "#EFEFEF", 
+    fontSize: 80,
+    textAlign: 'right',
+    paddingTop: 30,
+    paddingRight: 10
+  }, 
+  result: {
+    flex: 0.4, 
+    backgroundColor: "#EFEFEF", 
+    fontSize: 40,
+    textAlign: 'right',
+    paddingRight: 10, 
+    paddingBottom: 10
+  }, 
+  buttons: {
+    flex: 5, 
+    flexDirection: 'row'
   },
-  calculos: {
+  col1:{
     flex: 3, 
-    flexDirection: "row"
-  },
-  numeros: {
-    flex: 3,
-  },
-  simbolos:{
-    flex: 1,
-    margin: 1, 
-    alignItems: 'stretch', 
-    justifyContent: "space-around"
-  },
-  buttons:{
-    flex: 1,
-    margin: 1, 
-    backgroundColor: "#282525",
-    fontSize: 25, 
-    justifyContent: "center", 
-    alignItems: "center", 
-  
+    backgroundColor: 'grey'
   }, 
-  lines: {
+  col2: {
     flex: 1, 
-    margin: 1, 
+    backgroundColor: "red"
+  }, 
+  line: {
+    flex: 1, 
     flexDirection: "row"
   }, 
-  text:{
-    fontSize: 36, 
-    color: '#fff'
+  btn: {
+    flex: 1, 
+    alignItems: "center", 
+    justifyContent: "center", 
+
   }, 
-  TextResult :{
-    fontSize: 80, 
-    color: "red"
+  btnText:{
+    textAlign: "center", 
+    fontSize: 50
   }
- 
+
 });
