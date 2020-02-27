@@ -22,7 +22,7 @@ export default function  App() {
   }
 
   function Calcular(){
-    let operacao = calc.filter(x => typeof(x)==="string")
+    let operacao = calc.filter(x => typeof(x)==="string" && x!='.')
     let numeros = calc.join('').split(operacao)
     let n1 = numeros[0]; 
     let n2 = numeros[1]; 
